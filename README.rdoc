@@ -1,0 +1,35 @@
+= Subly
+
+This gem provides the ability to add subscriptions to models that is controlled from an external app
+
+== Usage
+subly accepts a single optional parameter of :is_methods
+  class Item < ActiveRecord::Base
+    subly :is_methods => [:premium, :standard]
+  end
+
+== Migration
+See the last todo, this needs to me a generator/rake task but I am tired and want to goto sleep
+  create_table :subly_models do |t|
+    t.string    :subscriber_type
+    t.integer   :subscriber_id
+    t.string    :name
+    t.string    :value
+    t.datetime  :starts_at
+    t.datetime  :ends_at
+  end
+  add_index :subly_models, [:subscriber_type,:subscriber_id], :name => 'subscriber_idx'
+  add_index :subly_models, :starts_at, :name => 'starts_idx'
+  add_index :subly_models, :ends_at, :name => 'ends_idx'
+
+== Todo
+*  maybe add a controller
+*  do something with the value field, I think it useful but can't think of a use case yet.
+*  make the doco usefull
+*  make a generator for rails 2 and 3
+
+== Copyright
+
+Copyright (c) 2011 SmashTank Apps, LLC. See LICENSE.txt for
+further details.
+
