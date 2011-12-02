@@ -4,6 +4,7 @@ require "subly/model"
 module Subly
   def subly(args = {})
     self.has_many :sublies, :as => :subscriber, :class_name => 'Subly::Model'
+    self.accepts_nested_attributes_for :sublies, :allow_destroy => true, :reject_if => :all_blank
 
     #we don't want to use method missing for all "is" methods
     if is_methods = args.delete(:is_methods)
@@ -36,7 +37,10 @@ module Subly
   end
 
   module InstanceMethods
-    def add_subscription(name, value = nil, start_date = Time.now, end_date = nil)
+    def add_subscription(name, args = {})
+      value = args[:value] || nil
+      start_date = args[:start_date] || Time.now
+      end_date = args[:end_date] || nil
       self.sublies.create(:name => name, :value => value, :starts_at => start_date, :ends_at => end_date)
     end
 

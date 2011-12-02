@@ -25,7 +25,7 @@ describe Subly do
 
   it "has_subscription should return true even for expired subscription" do
     thing_one = Thing.create(:name => 'Thing One', :description => 'foo')
-    thing_one.add_subscription('sub name',"value", Time.now - 1.day, Time.now - 2.hours).should be_true
+    thing_one.add_subscription('sub name', :start_date => Time.now - 1.day, :end_date => Time.now - 2.hours).should be_true
     thing_one.reload
     thing_one.has_subscription?('sub name').should be_true
   end
@@ -41,7 +41,7 @@ describe Subly do
   it "should find models with even expired subscriptions" do
     Thing.delete_all
     thing_one = Thing.create(:name => 'Thing One', :description => 'foo')
-    thing_one.add_subscription('sub name',"value",Time.now - 1.day, Time.now - 2.hours).should be_true
+    thing_one.add_subscription('sub name', :start_date => Time.now - 1.day, :end_date => Time.now - 2.hours).should be_true
     Thing.with_subscription('sub name').should == [thing_one]
     thing_one.destroy
   end
