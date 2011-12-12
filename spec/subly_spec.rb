@@ -17,6 +17,7 @@ describe Subly do
   end
 
   it "subscription should default to active" do
+    Time.stub!(:zone).and_return(Time)
     thing_one = Thing.create(:name => 'Thing One', :description => 'foo')
     thing_one.add_subscription('sub name').should be_true
     thing_one.reload
@@ -51,10 +52,12 @@ describe Subly do
   end
 
   it "is method should be false if it does not have an active sub" do
+    Time.stub!(:zone).and_return(Time)
     Item.new.is_subby?.should be_false
   end
 
   it "is method should be true if it has an active sub" do
+    Time.stub!(:zone).and_return(Time)
     item = Item.create(:name => 'foo')
     item.add_subscription('subby')
     item.is_subby?.should be_true

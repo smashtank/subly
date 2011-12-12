@@ -9,12 +9,12 @@ module Subly
     validate :ends_after_starts
 
     def self.active
-      now = Time.now
+      now = Time.zone.now
       scoped(:conditions => ['starts_at <= ? AND (ends_at > ? OR ends_at IS NULL)', now, now])
     end
 
     def self.expired
-      now = Time.now
+      now = Time.zone.now
       scoped(:conditions => ['starts_at <= ? AND ends_at <= ?', now, now])
     end
 
