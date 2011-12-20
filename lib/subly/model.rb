@@ -29,7 +29,7 @@ module Subly
 
     private
     def ends_after_starts
-      unless ends_at.nil? || (ends_at > starts_at)
+      if !starts_at.nil? && !ends_at.nil? && (ends_at < starts_at)
         raise "ends_at must be after starts_at"
       end
     end
