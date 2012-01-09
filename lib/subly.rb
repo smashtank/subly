@@ -38,10 +38,9 @@ module Subly
 
   module InstanceMethods
     def add_subscription(name, args = {})
-      value = args[:value] || nil
-      start_date = args[:start_date] || Time.now
-      end_date = args[:end_date] || nil
-      self.sublies.create(:name => name, :value => value, :starts_at => start_date, :ends_at => end_date)
+      args[:starts_at] ||=  Time.now
+      args[:name] = name
+      self.sublies.create(args)
     end
 
     def has_subscription?(name)

@@ -15,6 +15,8 @@ Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
 #ActiveRecord::Schema.verbose = false
 ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
 
+ActiveRecord::Base.logger = Logger.new('/dev/null')
+
 ActiveRecord::Base.configurations = true
 ActiveRecord::Schema.define(:version => 1) do
   create_table :items do |t|
