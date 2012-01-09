@@ -50,6 +50,17 @@ module Subly
     def has_active_subscription?(name)
       self.sublies.active.by_name(name).count > 0
     end
+
+    def cancel_active_subscriptions(name)
+      self.sublies.active.by_name(name).collect(&:expire_now)
+    end
+
+    def cancel_all_subscriptions(name)
+      self.sublies.unexpired.by_name(name).each do |sub|
+        #if active, deactivate, else destroy as and end_time greater than start is not valid
+        sub.active? ? sub.expire_now : sub.destroy
+      end
+    end
   end
 end
 

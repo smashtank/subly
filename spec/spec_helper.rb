@@ -6,7 +6,9 @@ require 'subly'
 require 'sqlite3'
 
 #Time.zone.now doesn't work in test
-
+def stub_time_zone
+  Time.stub!(:zone).and_return(Time)
+end
 
 # Requires supporting files with custom matchers and macros, etc,
 # in ./support/ and its subdirectories.

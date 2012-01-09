@@ -21,6 +21,11 @@ module Subly
       scoped(:conditions => ['starts_at <= ? AND ends_at <= ?', now, now])
     end
 
+    def self.unexpired
+      now = Time.zone.now
+      scoped(:conditions => ['ends_at > ? OR ends_at IS NULL', now])
+    end
+
     def self.for_subscriber(sub)
       raise ArgumentError('wrong number of arguments (0 for 1)') if sub.blank?
       scoped(:conditions => ['subscriber_type = ? AND subscriber_id = ?',sub.class.to_s, sub.id])
@@ -41,6 +46,20 @@ module Subly
     def active?
       now = Time.now
       !!(starts_at <= now && (ends_at.nil? || ends_at > now))
+    end
+
+    def expired?
+      now = Time.now
+      !(ends_at.nil? || ends_at > now)
+    end
+
+    def in_the_future?
+      now = Time.now
+      !!(starts_at > now && (ends_at.nil? || ends_at > now))
+    end
+
+    def expire_now
+      self.update_attribute(:ends_at, Time.now)
     end
 
     private
